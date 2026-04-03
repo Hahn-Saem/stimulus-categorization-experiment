@@ -9,6 +9,9 @@ class Config:
     instruction_delay = 1000 
 
     stimulus_bg_color = "white"
+    stimulus_font_color = "black"
+    stimulus_font_size = 32
+    stimulus_font = "helvetica"
     image_stimulus_height = 400
     image_stimulus_width = 400
 

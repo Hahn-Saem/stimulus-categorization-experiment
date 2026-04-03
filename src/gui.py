@@ -1,5 +1,5 @@
 import tkinter as tk
-from config import Config
+from config.config import Config
 import time
 from PIL import Image, ImageTk
 

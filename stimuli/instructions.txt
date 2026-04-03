@@ -1,0 +1,2 @@
+In this experiment, you are going to be shown a target image first, then a side-by-side display of the target image as well as a distractor image. You are to click the "f" key if the target image appears on the left hand side of the screen and "j" key if the target image appears on the right hand side of the screen. Please try to identify the correct image as fast as you can! When you are ready to begin the experiment, press SPACE BAR.
+You have completed the experiment. Thank you for your participation. Please press the SPACE BAR to quit.
