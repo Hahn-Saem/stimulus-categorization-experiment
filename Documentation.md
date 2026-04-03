@@ -1,0 +1,23 @@
+# Overview of the Stimulus Categorization Experiment
+## Introduction to the Logic of My Program
+There are different theories that attempt to model how semantic information is represented in the mind. The hierarchical perspective argues that semantic information is organized into a hierarchy consisting of a superordinate, basic, and subordinate layer. Each of these layers have specific categories that range in specificity, typically with the superordinate more general than the basic and subordinate category. For example, the superordinate layer might be mammal, basic layer might be dog, and the subordinate layer might be Golden Retriever. This model can be expanded to describe the relationship within (i.e., Golden retriever versus German Shepard) and between categories (i.e., dog versus shirt). To investigate this view, I hope to create an experiment that will display images on a screen and record reaction time to get a better understanding of how different superordinate categories are represented.
+
+## Classes
+**Exp** - Include the necessary methods needed to run the experiment.
+
+**Instruction** - Display the instructions.
+
+**Config** - Include constants such as the dimensions of the screen.
+
+## Functions/Methods
+**show_instructions(self)** - A method that will display the instructions
+
+**run_experiment(self)** - A method that will run the experiment from start to finish. As a result, this method will likely call other methods in the Exp class and other classes, such as the show_instructions method.
+
+**save_data(self)** - A method for saving the data. The first row will be a list of strings that specifies that what data is stored in each list element. Then the rest of the data (e.g., participant_id, stimulus, correct, response, rt, etc) will be appended into a final_data_list.
+
+## Code Structure
+- `stimulus\` - Contains all the images used in the experiment
+- `exp.py` - Experiment file
+- `instructions.txt` - Stores the instructions text
+- `config.py` - Congfiguration settings for various parts of the experiment

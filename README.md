@@ -1,4 +1,4 @@
-# Hahn-Saem Lee | BCOG 200 Final Project 
+# Hahn-Saem Lee | BCOG 200 Final Project
 ## Description of my planned project (1)
 
 For my final project, I hope to measure the reaction time for identifying a target stimulus compared to several distractor items. I imagine the experiment will begin by having the participants view an instructions page. Next, a target word will be presented, followed by a side-by-side display containing the target image and a distractor image. Participants will then press the key corresponding to the side of the screen where the target image appears (i.e., press “F” if the target image appears on the left side of the screen and “J” if it appears on the right). This process will repeat several times for different superordinate categories, such as mammals, clothes, etc. Another possible extension of this project would be to turn the experiment into a website or application. That way, participants can conduct this experiment at home, on a computer, or on a mobile device. 
@@ -20,4 +20,4 @@ https://www.jspsych.org/latest/tutorials/rt-task/
 
 https://www.psychopy.org/
 
-https://github.com/Hahn-Saem/bcog200-final-project-SP26/blob/main/README.md
+https://github.com/Hahn-Saem/stimulus-categorization-experiment/blob/main/README.md
