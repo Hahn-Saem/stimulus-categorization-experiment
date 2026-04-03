@@ -43,7 +43,7 @@ class Gui:
     def preload_images(self, image_name_list):
         self.image_dict = {}  
         for image_name in image_name_list:
-            image = Image.open("stimuli/" + image_name + ".png") 
+            image = Image.open("stimuli/images/" + image_name + ".png") 
             photo_image = ImageTk.PhotoImage(image)
             self.image_dict[image_name] = photo_image
     
@@ -78,24 +78,24 @@ class Gui:
 
             self.key_pressed = event.keysym  
         
-    def show_stimulus(self, key_list):
+    def show_stimulus(self, stimulus_name, key_list):
+        self.stimulus_label.configure(image=self.image_dict[stimulus_name])
         self.stimulus_label.pack()
         self.stimulus_label.pack_propagate(False)
         self.root.update()
 
-        time1 = time.time() 
+        time1 = time.time()
 
-        if key_list is not None:
-            self.key_pressed = None
-            self.root.bind('<Key>', lambda event: self.check_for_valid_key_press(event, key_list))
+        self.key_pressed = None
+        self.root.bind(
+            '<Key>',
+            lambda event: self.check_for_valid_key_press(event, key_list)
+        )
 
-            while not self.key_pressed:
-                self.root.update()
+        while not self.key_pressed:
+            self.root.update()
 
-        else:
-            self.root.after(Config.stimulus_presentation_time)
-
-        time2 = time.time() 
+        time2 = time.time()
         rt = time2 - time1
 
         self.stimulus_label.pack_forget()

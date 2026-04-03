@@ -25,6 +25,7 @@ class Exp:
         self.create_participant_id()
         self.create_instruction_list()
         self.create_stimuli_list()
+        self.the_gui.preload_images(self.full_stimulus_list)
         self.run_experiment()
 
     def create_random_seed(self):

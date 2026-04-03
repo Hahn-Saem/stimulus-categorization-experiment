@@ -1,0 +1,3 @@
+# Stimulus Categorization Experiment - Manual Test Description
+### What to Expect: (as of Project Check-in #1)
+After opening the experiment in the terminal, the user should see the instructions appearing on the screen. As of 4/3/26, the instructions are poorly formatted, with some of the words appearing beyond the size of the screen. The participant should be able to click the SPACE BAR to begin the experiment, and see an image of a dog appear on the screen. To continue with the incomplete experiment, the participant will click the 'f' or 'j' key to see a picture of a shoe. Lastly, a message notifying the participant that they have completed the experiment should appear on the screen. To exit out of the program, the user will click the SPACE BAR.
