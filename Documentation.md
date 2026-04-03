@@ -3,11 +3,11 @@
 There are different theories that attempt to model how semantic information is represented in the mind. The hierarchical perspective argues that semantic information is organized into a hierarchy consisting of a superordinate, basic, and subordinate layer. Each of these layers have specific categories that range in specificity, typically with the superordinate more general than the basic and subordinate category. For example, the superordinate layer might be mammal, basic layer might be dog, and the subordinate layer might be Golden Retriever. This model can be expanded to describe the relationship within (i.e., Golden retriever versus German Shepard) and between categories (i.e., dog versus shirt). To investigate this view, I hope to create an experiment that will display images on a screen and record reaction time to get a better understanding of how different superordinate categories are represented.
 
 ## Classes
-**Exp** - Include the necessary methods needed to run the experiment.
+**Exp** - Include the necessary methods needed to run the experiment
 
-**Instruction** - Display the instructions.
+**Instruction** - Display the instructions
 
-**Config** - Include constants such as the dimensions of the screen.
+**Config** - Include constants such as the dimensions of the screen
 
 ## Functions/Methods
 **show_instructions(self)** - A method that will display the instructions
