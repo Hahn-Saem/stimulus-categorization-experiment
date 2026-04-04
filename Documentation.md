@@ -10,9 +10,9 @@ There are different theories that attempt to model how semantic information is r
 **Config** - Include constants such as the dimensions of the screen
 
 ## Functions/Methods
-**show_instructions(self)** - A method that will display the instructions
+**show_instructions(self, instruction, end_on_key_press)** - A method that will display the instructions and have an option to get ride of the instructions via a boolean argument.
 
-**run_experiment(self)** - A method that will run the experiment from start to finish. As a result, this method will likely call other methods in the Exp class and other classes, such as the show_instructions method.
+**run_experiment(self)** - A method that will run the experiment from start to finish. As a result, this method will call other methods in the Exp class and Gui class, such as the show_instructions method.
 
 **save_data(self)** - A method for saving the data. The first row will be a list of strings that specifies that what data is stored in each list element. Then the rest of the data (e.g., participant_id, stimulus, correct, response, rt, etc) will be appended into a final_data_list.
 
