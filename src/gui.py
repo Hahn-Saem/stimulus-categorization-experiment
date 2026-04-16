@@ -2,6 +2,7 @@ import tkinter as tk
 from config.config import Config
 import time
 from PIL import Image, ImageTk
+import os
 
 class Gui:
     def __init__(self):
@@ -41,11 +42,14 @@ class Gui:
             font="{} {}".format(Config.stimulus_font, Config.stimulus_font_size)
         )
     def preload_images(self, image_name_list):
-        self.image_dict = {}  
-        for image_name in image_name_list:
-            image = Image.open("stimuli/images/" + image_name + ".png") 
-            photo_image = ImageTk.PhotoImage(image)
-            self.image_dict[image_name] = photo_image
+        self.image_dict = {}
+        directory_list = os.listdir("stimuli/images/")
+        for file, set in zip(directory_list, image_name_list):
+            current_file = "stimuli/images/" + file + "/"
+            for img in set:
+                image = Image.open(current_file + img + ".png")
+                photo_image = ImageTk.PhotoImage(image)
+                self.image_dict[img] = photo_image
     
     def show_instructions(self, instructions, end_on_key_press, extra_delay=None):
         self.instructions_text_label.configure(text=instructions) 
@@ -78,9 +82,9 @@ class Gui:
 
             self.key_pressed = event.keysym  
         
-    def show_stimulus(self, stimulus_name, key_list):
-        self.stimulus_label.configure(image=self.image_dict[stimulus_name])
-        self.stimulus_label.pack()
+    def show_stimulus(self, stimulus1, stimulus2, key_list):
+        self.stimulus_label.configure(image=self.image_dict[stimulus1])
+        self.stimulus_label.pack(side=tk.LEFT)
         self.stimulus_label.pack_propagate(False)
         self.root.update()
 

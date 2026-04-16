@@ -51,9 +51,13 @@ class Exp:
         directory_list = os.listdir("stimuli/images/")
         self.full_stimulus_list = []
 
-        for thing in directory_list:
-            if not thing.startswith("."):
-                self.full_stimulus_list.append(thing[:-4])
+        for file in directory_list:
+            curr_dir = os.listdir("stimuli/images/" + file + "/")
+            img_set = []
+            for img in curr_dir:
+                if not file.startswith("."):
+                    img_set.append(img[:-4])
+            self.full_stimulus_list.append(img_set)
 
     def run_experiment(self):
         self.the_gui.show_instructions(self.instruction_list[0], True)
@@ -63,8 +67,24 @@ class Exp:
         self.the_gui.root.destroy()
 
     def present_stimulus_list(self, stimulus_list, key_list, record_data):
-        for stimulus_name in stimulus_list:
-            key_pressed, rt = self.the_gui.show_stimulus(stimulus_name, key_list)
-            if record_data:
-                trial_data = [stimulus_name, key_pressed, rt]
-                self.data_list.append(trial_data)
+        rand_set = random.randint(0, 1) # change the upper bound to 3 after I get all the stimuli
+
+        rand_stimuli_list = [random.randint(0,3) for i in range(2)]
+        unique_samples = random.sample(stimulus_list[rand_set], k=2)
+
+        # for i in range(2):
+        #     key_pressed, rt = self.the_gui.show_stimulus(
+        #         stimulus_list[rand_set][rand_stimuli_list][0], 
+        #         stimulus_list[rand_set][rand_stimuli_list][1])
+        #     if record_data:
+        #         trial_data = [stimulus_name, key_pressed, rt]
+        #         self.data_list.append(trial_data)
+
+        # for set in stimulus_list[rand_set]:
+            
+
+        # for stimulus_name in stimulus_list:
+        #     key_pressed, rt = self.the_gui.show_stimulus(stimulus_name, key_list)
+        #     if record_data:
+        #         trial_data = [stimulus_name, key_pressed, rt]
+        #         self.data_list.append(trial_data)
