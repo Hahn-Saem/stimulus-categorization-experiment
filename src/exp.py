@@ -60,7 +60,7 @@ class Exp:
             self.full_stimulus_list.append(img_set)
 
     def run_experiment(self):
-        # self.the_gui.show_instructions(self.instruction_list[0], True)
+        self.the_gui.show_instructions(self.instruction_list[0], True)
         self.present_stimulus_list(self.full_stimulus_list, Config.test_key_list, True)
         # self.the_gui.show_instructions(self.instruction_list[1], True)
         # self.save_data()

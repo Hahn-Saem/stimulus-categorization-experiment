@@ -18,4 +18,6 @@ class Config:
 
     test_key_list = ["f", "j"]
 
+    target_word_list = ["LION", "SHOE", "RED BALL", "CHAIR"]
+
     instruction_file_path_list = [] # might not need because it's in the same directory

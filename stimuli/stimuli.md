@@ -4,7 +4,7 @@ Stimuli:
 | --- | --- |
 | Lion | Tiger Bird Clown |
 | Sneaker | Heels Sock pan |
-| 4-Square Ball | Basketball football Car |
+| 4-Square Ball | Soccer ball football Car |
 | Chair | Table sink phone |
 
 
