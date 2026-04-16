@@ -60,10 +60,10 @@ class Exp:
             self.full_stimulus_list.append(img_set)
 
     def run_experiment(self):
-        self.the_gui.show_instructions(self.instruction_list[0], True)
+        # self.the_gui.show_instructions(self.instruction_list[0], True)
         self.present_stimulus_list(self.full_stimulus_list, Config.test_key_list, True)
-        self.the_gui.show_instructions(self.instruction_list[1], True)
-        self.save_data()
+        # self.the_gui.show_instructions(self.instruction_list[1], True)
+        # self.save_data()
         self.the_gui.root.destroy()
 
     def present_stimulus_list(self, stimulus_list, key_list, record_data):
@@ -71,6 +71,14 @@ class Exp:
 
         rand_stimuli_list = [random.randint(0,3) for i in range(2)]
         unique_samples = random.sample(stimulus_list[rand_set], k=2)
+
+        stimulus1 = unique_samples[0]
+        stimulus2 = unique_samples[1]
+
+        key_pressed, rt = self.the_gui.show_stimulus(stimulus1, stimulus2, key_list)
+        if record_data:
+            trial_data = [stimulus1, stimulus2, key_pressed, rt]
+            self.data_list.append(trial_data)
 
         # for i in range(2):
         #     key_pressed, rt = self.the_gui.show_stimulus(

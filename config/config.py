@@ -4,7 +4,7 @@ class Config:
 
     instructions_bg_color = "white"
     instructions_font_color = "black"
-    instructions_font_size = 18
+    instructions_font_size = 15
     instructions_font = "helvetica"
     instruction_delay = 1000 
 
@@ -12,8 +12,9 @@ class Config:
     stimulus_font_color = "black"
     stimulus_font_size = 32
     stimulus_font = "helvetica"
+
     image_stimulus_height = 400
-    image_stimulus_width = 400
+    image_stimulus_width = 600
 
     test_key_list = ["f", "j"]
 

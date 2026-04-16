@@ -16,3 +16,5 @@ Stimuli:
 
 Stage 1:
 - Just get images to appear side by side
+
+Add save_data()

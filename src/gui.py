@@ -7,7 +7,9 @@ import os
 class Gui:
     def __init__(self):
         self.root = None
-        self.stimulus_label = None
+        self.stimulus_frame = None
+        self.stimulus_label1 = None
+        self.stimulus_label2 = None
         self.instructions_label = None
         self.key_pressed = None
         self.image_dict = None
@@ -24,7 +26,7 @@ class Gui:
 
     def create_labels(self):
         self.instructions_text_label = tk.Label(
-            self.root, anchor='center',
+            self.root,
             height=Config.window_height,
             width=Config.window_width,
             bg=Config.instructions_bg_color,
@@ -32,11 +34,21 @@ class Gui:
             font="{} {}".format(Config.instructions_font, Config.instructions_font_size)
         )
 
+        self.stimulus_frame = tk.Label(
+            self.root,
+            bg = Config.stimulus_bg_color
+        )
+
         # change this so that label only takes up half of the screen
-        self.stimulus_label = tk.Label(
-            self.root, anchor='center',
-            height=Config.window_height,
-            width=Config.window_width,
+        self.stimulus_label1 = tk.Label(
+            self.stimulus_frame,
+            bg=Config.stimulus_bg_color,
+            fg=Config.stimulus_font_color,
+            font="{} {}".format(Config.stimulus_font, Config.stimulus_font_size)
+        )
+
+        self.stimulus_label2 = tk.Label(
+            self.stimulus_frame,
             bg=Config.stimulus_bg_color,
             fg=Config.stimulus_font_color,
             font="{} {}".format(Config.stimulus_font, Config.stimulus_font_size)
@@ -48,8 +60,13 @@ class Gui:
             current_file = "stimuli/images/" + file + "/"
             for img in set:
                 image = Image.open(current_file + img + ".png")
+
+                image = image.resize(
+                    (Config.image_stimulus_width, Config.image_stimulus_height)
+                )
                 photo_image = ImageTk.PhotoImage(image)
                 self.image_dict[img] = photo_image
+                
     
     def show_instructions(self, instructions, end_on_key_press, extra_delay=None):
         self.instructions_text_label.configure(text=instructions) 
@@ -83,9 +100,16 @@ class Gui:
             self.key_pressed = event.keysym  
         
     def show_stimulus(self, stimulus1, stimulus2, key_list):
-        self.stimulus_label.configure(image=self.image_dict[stimulus1])
-        self.stimulus_label.pack(side=tk.LEFT)
-        self.stimulus_label.pack_propagate(False)
+        self.stimulus_label1.configure(image=self.image_dict[stimulus1])
+        self.stimulus_label2.configure(image=self.image_dict[stimulus2])
+        
+        self.stimulus_label1.image = self.image_dict[stimulus1]
+        self.stimulus_label2.image = self.image_dict[stimulus2]
+
+        self.stimulus_label1.pack(side="left")
+        self.stimulus_label2.pack(side="right")
+
+        self.stimulus_frame.pack(expand=True, fill="both")
         self.root.update()
 
         time1 = time.time()
@@ -102,7 +126,7 @@ class Gui:
         time2 = time.time()
         rt = time2 - time1
 
-        self.stimulus_label.pack_forget()
+        self.stimulus_frame.pack_forget()
         self.root.update()
 
         return self.key_pressed, rt
