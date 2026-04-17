@@ -3,6 +3,7 @@ from config.config import Config
 import time
 from PIL import Image, ImageTk
 import os
+import random
 
 class Gui:
     def __init__(self):
@@ -10,6 +11,7 @@ class Gui:
         self.stimulus_frame = None
         self.stimulus_label1 = None
         self.stimulus_label2 = None
+        self.target_word_label = None
         self.instructions_label = None
         self.key_pressed = None
         self.image_dict = None
@@ -53,6 +55,15 @@ class Gui:
             fg=Config.stimulus_font_color,
             font="{} {}".format(Config.stimulus_font, Config.stimulus_font_size)
         )
+
+        self.target_word_label = tk.Label(
+            self.root, 
+            anchor='center',
+            bg=Config.stimulus_bg_color,
+            fg=Config.target_word_font_color,
+            font="{} {}".format(Config.target_word_font, Config.target_word_font_size)
+        )
+
     def preload_images(self, image_name_list):
         self.image_dict = {}
         directory_list = os.listdir("stimuli/images/")
@@ -99,6 +110,21 @@ class Gui:
 
             self.key_pressed = event.keysym  
         
+    def choose_target_word(self):
+        choose_word = random.choice(Config.target_word_list)
+        return choose_word
+    
+    def show_target_word(self, target_word):
+        self.target_word_label.configure(text=target_word) 
+        self.target_word_label.pack(expand=True)
+        self.target_word_label.pack_propagate(False)
+
+        self.root.update()
+        
+        self.root.after(Config.target_word_delay)
+
+        self.target_word_label.pack_forget() 
+
     def show_stimulus(self, stimulus1, stimulus2, key_list):
         self.stimulus_label1.configure(image=self.image_dict[stimulus1])
         self.stimulus_label2.configure(image=self.image_dict[stimulus2])
