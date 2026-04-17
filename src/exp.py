@@ -71,9 +71,6 @@ class Exp:
 
     def present_stimulus_list(self, stimulus1, stimulus_list, key_list, record_data): 
         the_list = []
-        '''
-        if target word is red ball, then find the set with the red ball.
-        '''
         stimulus1 = stimulus1.lower()
         for set in stimulus_list:
             if stimulus1 in set:
