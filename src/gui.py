@@ -125,12 +125,9 @@ class Gui:
 
         self.target_word_label.pack_forget() 
 
-    def show_stimulus(self, stimulus1, stimulus2, key_list):
-        self.stimulus_label1.configure(image=self.image_dict[stimulus1])
-        self.stimulus_label2.configure(image=self.image_dict[stimulus2])
-        
-        self.stimulus_label1.image = self.image_dict[stimulus1]
-        self.stimulus_label2.image = self.image_dict[stimulus2]
+    def show_stimulus(self, stimuli1, stimuli2, key_list):
+        self.stimulus_label1.configure(image=self.image_dict[stimuli1])
+        self.stimulus_label2.configure(image=self.image_dict[stimuli2])
 
         self.stimulus_label1.pack(side="left")
         self.stimulus_label2.pack(side="right")

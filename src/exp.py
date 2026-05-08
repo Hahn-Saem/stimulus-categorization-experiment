@@ -3,6 +3,7 @@ import datetime
 import csv
 import os
 from config.config import Config
+import itertools
 
 class Exp:
     def __init__(self, the_gui):
@@ -17,7 +18,7 @@ class Exp:
 
         self.instruction_list = []
 
-        self.full_stimulus_list = []
+        self.full_stimuli_list = []
 
         self.data_list = []
 
@@ -25,7 +26,7 @@ class Exp:
         self.create_participant_id()
         self.create_instruction_list()
         self.create_stimuli_list()
-        self.the_gui.preload_images(self.full_stimulus_list)
+        self.the_gui.preload_images(self.full_stimuli_list)
         self.run_experiment()
 
     def create_random_seed(self):
@@ -50,55 +51,68 @@ class Exp:
 
     def create_stimuli_list(self):
         directory_list = os.listdir("stimuli/images/")
-        self.full_stimulus_list = []
+        self.full_stimuli_list = []
 
+        # Adds all the stimuli sets to self.full_stimuli_list. 
+        # Note: this does NOT add all the images individually, but the folders containing the stimuli sets
         for file in directory_list:
             curr_dir = os.listdir("stimuli/images/" + file + "/")
             img_set = []
             for img in curr_dir:
                 if not file.startswith("."):
                     img_set.append(img[:-4])
-            self.full_stimulus_list.append(img_set)
+            self.full_stimuli_list.append(img_set)
 
     def run_experiment(self):
+        # I need to figure out how to run the entire exp
         self.the_gui.show_instructions(self.instruction_list[0], True)
-        self.target_word = self.the_gui.choose_target_word()
-        self.the_gui.show_target_word(self.target_word)
-        self.present_stimulus_list(self.target_word, self.full_stimulus_list, Config.test_key_list, True)
+        # self.the_gui.show_target_word(self.target_word)
+        self.present_stimulus_list(
+            self.full_stimuli_list, Config.test_key_list
+            )
         self.the_gui.show_instructions(self.instruction_list[1], True)
         # self.save_data()
         self.the_gui.root.destroy()
 
-    def present_stimulus_list(self, stimulus1, stimulus_list, key_list, record_data): 
-        the_list = []
-        stimulus1 = stimulus1.lower()
-        for set in stimulus_list:
-            if stimulus1 in set:
-                the_list = set
-                the_list.remove(stimulus1)
-                break
-        # unique_samples = random.sample(stimulus_list[rand_set], k=2)
+    # removed key_list, record_data parameters
+    # perhaps rename this create_trials and then have another function for actually presenting the stimuli
+    def present_stimulus_list(self, stimulus_list, key_list): 
+        full_stimulus_pairings_list = []
+
+        for target_word in Config.target_word_list:
+            set_images = []
+            target_word = target_word.lower()
+
+            # Find where the folder where the target stimulus is located
+            for set in stimulus_list:
+                if target_word in set:
+                    set_images = set
+                    set_images.remove(target_word)
+                    break
+
+            for distractor_word in set_images:
+                full_stimulus_pairings_list.append({
+                    "left": target_word,
+                    "right": distractor_word
+                })
+
+                full_stimulus_pairings_list.append({
+                    "left": distractor_word,
+                    "right": target_word
+                })
         
-        coin_flip = random.randint(0, 1)
 
-        if coin_flip == 0:
-            stimulus1 = stimulus1
-            choose_index = random.randint(0, 2)
-            stimulus2 = the_list[choose_index]
-        else:
-            stimulus2 = stimulus1
-            choose_index = random.randint(0, 2)
-            stimulus1 = the_list[choose_index]
+        random.shuffle(full_stimulus_pairings_list)
 
-        key_pressed, rt = self.the_gui.show_stimulus(stimulus1, stimulus2, key_list)
-        if record_data:
-            if coin_flip == 0:
-                target_img = stimulus1
-                distractor_img = stimulus2
+        for trial in full_stimulus_pairings_list:
+            if trial["left"] in Config.target_word_list:
+                target_word = trial["left"]
             else:
-                target_img = stimulus2
-                distractor_img = stimulus1
-            trial_data = [target_img, distractor_img, coin_flip, key_pressed, rt]
+                target_word = trial["right"]
+            self.the_gui.show_target_word(target_word)
+            key_pressed, rt = self.the_gui.show_stimulus(trial["left"], trial["right"], key_list)
+
+            trial_data = [target_word, trial["left"], trial["right"], key_pressed, rt]
             self.data_list.append(trial_data)
 
     def save_data(self):
@@ -111,7 +125,8 @@ class Exp:
                 "participant_id",
                 "random_seed",
                 "target_word",
-                "distractor_word",
+                "left_image",
+                "right_image",
                 "response",
                 "correct",
                 "rt"
@@ -128,23 +143,29 @@ class Exp:
             # add target word to the final trial data
             final_trial_data.append(trial_data[0])
 
-            # add distractor word to the final trial data
+            # add left image to the final trial data
             final_trial_data.append(trial_data[1])
+
+            # add right image to the final trial data
+            final_trial_data.append(trial_data[2])
 
             # add the key that was pressed to the final trial data
             final_trial_data.append(trial_data[3])
 
             # add whether the key that was pressed was the correct key
-            if trial_data[2] == 0:
+            if trial_data[1] == trial_data[0]:
                 if trial_data[3] == "f":
                     correct = 1
                 else:
                     correct = 0
-            else:
+            elif trial_data[2] == trial_data[0]:
                 if trial_data[3] == "j":
                     correct = 1
                 else:
                     correct = 0
+            else:
+                correct = 0
+
             final_trial_data.append(correct)
 
             # add the reaction time to the final trial data

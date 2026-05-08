@@ -1,4 +1,6 @@
-### Delete this later
+# Delete this later
+
+## Stimuli Structure
 Stimuli:
 | Target | Distractors |
 | --- | --- |
@@ -6,7 +8,6 @@ Stimuli:
 | Sneaker | Heels Sock pan |
 | 4-Square Ball | Soccer ball football Car |
 | Chair | Table sink phone |
-
 
 ## Outline
 ### Tasks
@@ -30,3 +31,8 @@ I think using a dictionary would be best
   - choose_target_word
   - show_target_word
   - show_stimulus
+  
+## Before I submit the entirety of the final project
+- Make sure *Code Style* is high quality
+- Make sure *Code Documentation* is high quality
+- Make sure all my imports are packages within the standard library. *Run As-Is Requirement*
