@@ -3,7 +3,6 @@ import datetime
 import csv
 import os
 from config.config import Config
-import itertools
 
 class Exp:
     def __init__(self, the_gui):
@@ -64,33 +63,27 @@ class Exp:
             self.full_stimuli_list.append(img_set)
 
     def run_experiment(self):
-        # I need to figure out how to run the entire exp
         self.the_gui.show_instructions(self.instruction_list[0], True)
-        # self.the_gui.show_target_word(self.target_word)
-        self.present_stimulus_list(
-            self.full_stimuli_list, Config.test_key_list
-            )
+        self.present_stimulus_list(self.full_stimuli_list, Config.test_key_list)
         self.the_gui.show_instructions(self.instruction_list[1], True)
         # self.save_data()
         self.the_gui.root.destroy()
 
-    # removed key_list, record_data parameters
-    # perhaps rename this create_trials and then have another function for actually presenting the stimuli
     def present_stimulus_list(self, stimulus_list, key_list): 
         full_stimulus_pairings_list = []
 
         for target_word in Config.target_word_list:
-            set_images = []
+            stimuli_set_list = []
             target_word = target_word.lower()
 
             # Find where the folder where the target stimulus is located
-            for set in stimulus_list:
-                if target_word in set:
-                    set_images = set
-                    set_images.remove(target_word)
+            for stimuli_set in stimulus_list:
+                if target_word in stimuli_set:
+                    stimuli_set_list = stimuli_set
+                    stimuli_set_list.remove(target_word)
                     break
 
-            for distractor_word in set_images:
+            for distractor_word in stimuli_set_list:
                 full_stimulus_pairings_list.append({
                     "left": target_word,
                     "right": distractor_word
@@ -101,7 +94,6 @@ class Exp:
                     "right": target_word
                 })
         
-
         random.shuffle(full_stimulus_pairings_list)
 
         for trial in full_stimulus_pairings_list:
@@ -133,7 +125,7 @@ class Exp:
             ]
         )
 
-        for i, trial_data in enumerate(self.data_list):
+        for trial_data in self.data_list:
             final_trial_data = [] 
 
             final_trial_data.append(self.participant_id)

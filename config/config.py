@@ -24,6 +24,3 @@ class Config:
     test_key_list = ["f", "j"]
 
     target_word_list = ["lion", "sneaker", "red ball", "chair"]
-    screen_sides = ["left", "right"]
-
-    instruction_file_path_list = [] # might not need because it's in the same directory

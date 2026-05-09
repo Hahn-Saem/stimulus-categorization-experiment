@@ -3,7 +3,6 @@ from config.config import Config
 import time
 from PIL import Image, ImageTk
 import os
-import random
 
 class Gui:
     def __init__(self):
@@ -12,7 +11,7 @@ class Gui:
         self.stimulus_label1 = None
         self.stimulus_label2 = None
         self.target_word_label = None
-        self.instructions_label = None
+        self.instructions__text_label = None
         self.key_pressed = None
         self.image_dict = None
 
@@ -41,7 +40,6 @@ class Gui:
             bg = Config.stimulus_bg_color
         )
 
-        # change this so that label only takes up half of the screen
         self.stimulus_label1 = tk.Label(
             self.stimulus_frame,
             bg=Config.stimulus_bg_color,
@@ -59,7 +57,7 @@ class Gui:
         self.target_word_label = tk.Label(
             self.root, 
             anchor='center',
-            bg=Config.stimulus_bg_color,
+            bg=Config.target_word_bg_color,
             fg=Config.target_word_font_color,
             font="{} {}".format(Config.target_word_font, Config.target_word_font_size)
         )
@@ -109,10 +107,6 @@ class Gui:
             self.root.focus_set()
 
             self.key_pressed = event.keysym  
-        
-    def choose_target_word(self):
-        choose_word = random.choice(Config.target_word_list)
-        return choose_word
     
     def show_target_word(self, target_word):
         self.target_word_label.configure(text=target_word) 
