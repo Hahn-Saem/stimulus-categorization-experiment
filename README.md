@@ -1,23 +1,65 @@
-# Hahn-Saem Lee | BCOG 200 Final Project
-## Description of my planned project (1)
+# Overview of the Stimulus Categorization Experiment
+## Introduction to the Experiment
+There are different theories that attempt to model how semantic information is represented in the mind. The hierarchical perspective argues that semantic information is organized into a hierarchy consisting of a superordinate, basic, and subordinate layer. Each of these layers have specific categories that range in specificity, with the superordinate being more general than the basic and subordinate category. For example, the superordinate layer might be mammal, basic layer might be dog, and the subordinate layer might be Golden Retriever. This model can be expanded to describe the relationship within (i.e., Golden retriever versus German Shepard) and between categories (i.e., dog versus shirt). 
 
-For my final project, I hope to measure the reaction time for identifying a target stimulus compared to several distractor items. I imagine the experiment will begin by having the participants view an instructions page. Next, a target word will be presented, followed by a side-by-side display containing the target image and a distractor image. Participants will then press the key corresponding to the side of the screen where the target image appears (i.e., press “f” if the target image appears on the left side of the screen and “j” if it appears on the right). This process will repeat several times for different superordinate categories, such as mammals, clothes, etc. Another possible extension of this project would be to turn the experiment into a website or application. That way, participants can conduct this experiment at home, on a computer, or on a mobile device. 
+To investigate this view, I created an experiment that tests whether participants will respond more slowly when the distractor image is semantically similar to the target image. 
+Participants are shown a target word followed by two side-by-side images:
+- A target image
+- A distractor image
 
-To expand on the details of the experiment, there will be a set of distractor images that vary in their semantic relatedness to the target image. For example, if lion is the target image, the distractor images might be tiger, bird, and chair. Tiger is the most semantically related to lion, followed by bird and chair. Ideally, these images would be centered, similar in size, and on the same background. I will try my best to find images or, perhaps, find a way to alter the images to meet these criteria. Additionally, I plan to counterbalance these photos, ensuring that each image appears the same number of times and appears on either the left or right side of the screen an equal amount of times.
+The participant must identify the target image that corresponds to the target word as quickly and accurately as possible, using the 'f' key to indicate that the target image appeared on the left hand of the screen and the 'j' key to indicate that the target image appeared on the right hand of the screen.
 
+For example:
+- `dog` vs `cat` -> expect a slower reaction time
+- `dog` vs `bird` -> expect a moderation reaction time
+- `dog` vs `phone` -> expect fast reaction time
 
-## Description of functions (2 a, b, c)
-Other than the main function, I plan to have a function that will run the experiment. The function will display the target as a word first, then show the target image and distractor images, abiding by the details provided in the second paragraph of the project description.
+## Classes
+**Exp** - Includes the necessary methods needed to run the experiment and saves the data
 
-I also plan to include a function that gets the next set of category items and returns them. These set of items will then be passed as an argument to the function that runs the experiment, which is also the function described in the previous paragraph.
+**Gui** - Contains the methods needed to display the stimuli and text on the screen
 
-A third function I hope to include is a function that will record the time it takes to identify the target image. That is, the time it takes for the participant to click on a key when the target and the distractor image are displayed side-by-side on the screen. I might also keep track of whether the participant chose the correct item in this function.
+**Config** - Holds constants that is accessed by other files
 
-### Helpful links for myself
-https://bcog200.netlify.app/CH20/
+## Functions/Methods
+**show_instructions(self, instruction, end_on_key_press, extra_delay)** - A method that will display the instructions, includes an option to get rid of the instructions via a boolean argument, and allows for an additionaly delay before ending the instruction display.
 
-https://www.jspsych.org/latest/tutorials/rt-task/
+**run_experiment(self)** - A method that will run the experiment from start to finish. As a result, this method will call other methods in the Exp class and Gui class.
 
-https://www.psychopy.org/
+**create_stimulus_pairings(self, stimulus_list)** - Creates the stimulus pairings, comparing the target word to each distractor image in the same set. Additionally, the pairings are counterbalanced, so that the target word appears on the left and right side of the screen an equal number of times across trials, and the order of the pairings is randomized. 
 
-https://github.com/Hahn-Saem/stimulus-categorization-experiment/blob/main/README.md
+**run_trials(self, full_stimulus_pairings_list, key_list)** - Displays the target word, then presents the stimulus pairing, and lastly records the trial data.
+
+**save_data(self)** - A method for saving the data. The first row will be a list of strings that specifies that what data is stored in each list element. Then the rest of the data (e.g., participant_id, stimulus, correct, response, rt, etc) will be appended into a final_data_list.
+
+## Installation
+```
+# Install the required dependencies
+pip install -r requirements.txt
+
+# Run the Experiment
+python run_experiment.py
+```
+
+## Testing
+The user should expect to see the experiment instructions on the screen after opening the experiment (via `python run_experiment.py`) in the terminal. Per the instructions, the participant will be able to begin the experiment by using the SPACE bar. During the experiment, two side-by-side images (a target image and a distractor image) should appear, and the participant should be able to identify the target image using the 'f' or 'j' key. After making a response, the next trial (a target word followed by a pair of images) should appear until the end of the experiment. Finally, a message notifying the participant that they have completed the experiment should appear on the screen. To exit out of the program, the user will click the SPACE bar.
+
+To summarize, the program will run as anticipated if the instructions appear on the screen at the beginning and at the end of the experiment, a target word is presented, a pair of images appear on the screen, and the program responds accordingly to the key that is pressed.
+
+## Code Structure
+- `config/` 
+  - `__init__.py` - Empty file that marks `config` as a Python package.
+  - `config.py` - Congfiguration settings for various parts of the experiment.
+- `data/` - Stores the participant data from the experiment.
+- `src/` - Core implementation.
+  - `exp.py` - Experiment file.
+  - `gui.py` - Formats the text and images that will be displayed.
+- `stimuli/` - Holds the images and instructions file.
+  - `images/` - Contains the four stimuli sets.
+    - `set1/` - Stimuli set 1. Target word is lion.
+    - `set2/` - Stimuli set 2. Target word is sneaker.
+    - `set3/` - Stimuli set 3. Target word is red ball.
+    - `set4/` - Stimuli set 4. Target word is chair.
+  - `instructions.txt` - Stores the instructions text
+- `requirements.txt` - Notes any libraries used in the program beyond the standard Python library.
+- `run_experiment.py` - Runs the experiment.

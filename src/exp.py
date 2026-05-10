@@ -5,7 +5,16 @@ import os
 from config.config import Config
 
 class Exp:
-    def __init__(self, the_gui):
+    def __init__(self, the_gui: "Gui") -> None:
+        """
+        Initializes experiment variables and calls the methods needed to set up and runs the experiment.
+
+        Args:
+            the_gui (Gui): an instance of the Gui class that is used to run the experiment.
+
+        Returns:
+            None
+        """
         self.the_gui = the_gui
 
         self.experiment_start_time = datetime.datetime.now()
@@ -28,48 +37,83 @@ class Exp:
         self.the_gui.preload_images(self.full_stimuli_list)
         self.run_experiment()
 
-    def create_random_seed(self):
+    def create_random_seed(self) -> None:
+        """
+        Generates a random seed based on the current date and time, and creates a random number generator 
+        using that seed.
+
+        Returns:
+            None
+        """
         self.random_seed = int(self.experiment_start_time.strftime("%Y%m%d%H%M%S%f"))
         self.rng = random.Random(self.random_seed)
     
-    def create_participant_id(self):
+    def create_participant_id(self) -> None:
+        """
+        Generates a unique participant ID based on the experiment start time and a random number.
+
+        Returns:
+            None
+        """
         formatted_datetime = self.experiment_start_time.strftime("%Y%m%d%H%M%S%f")
         random_number = self.rng.randint(100000, 999999)
         self.participant_id = f"{formatted_datetime}_{random_number}"
 
-    def create_instruction_list(self):
-        self.instruction_list = []
+    def create_instruction_list(self) -> None:
+        """
+        Creates a list of instructions using the instructions.txt file.
+
+        Returns:
+            None
+        """
 
         with open("stimuli/instructions.txt", "r") as file:
-            for line in file:
-                line = line.strip("\n")
+            self.instruction_list = [line.strip().replace(".", ".\n") for line in file]
 
-                line = line.replace(".", ".\n")
+    def create_stimuli_list(self) -> None:
+        """
+        Adds all the stimuli sets to self.full_stimuli_list. 
+        Note: this does NOT add all the images individually, but the folders containing the stimuli sets.
 
-                self.instruction_list.append(line)
-
-    def create_stimuli_list(self):
+        Returns:
+            None
+        """
         directory_list = os.listdir("stimuli/images/")
-        self.full_stimuli_list = []
 
-        # Adds all the stimuli sets to self.full_stimuli_list. 
-        # Note: this does NOT add all the images individually, but the folders containing the stimuli sets
-        for file in directory_list:
-            curr_dir = os.listdir("stimuli/images/" + file + "/")
-            img_set = []
-            for img in curr_dir:
-                if not file.startswith("."):
-                    img_set.append(img[:-4])
+        for set in directory_list:
+            curr_dir = os.listdir("stimuli/images/" + set + "/")
+            img_set = [img[:-4] for img in curr_dir if not img.startswith(".")]
             self.full_stimuli_list.append(img_set)
 
-    def run_experiment(self):
+    def run_experiment(self) -> None:
+        """
+        Runs the experiment and saves the data.
+
+        Returns:
+            None
+        """
         self.the_gui.show_instructions(self.instruction_list[0], True)
-        self.present_stimulus_list(self.full_stimuli_list, Config.test_key_list)
+        full_stimulus_pairings_list = self.create_stimulus_pairings(self.full_stimuli_list)
+        self.run_trials(full_stimulus_pairings_list, Config.test_key_list)
         self.the_gui.show_instructions(self.instruction_list[1], True)
         # self.save_data()
         self.the_gui.root.destroy()
 
-    def present_stimulus_list(self, stimulus_list, key_list): 
+    def create_stimulus_pairings(self, stimulus_list: list[list[str]]) -> list[dict[str, str]]: 
+        """
+        Creates the stimulus pairings, comparing the target word to each distractor image in the same set.
+        Additionally, the pairings are counterbalanced, so that the target word appears on the left and 
+        right side of the screen an equal number of times across trials, and the order of the pairings 
+        is randomized.
+
+        Args:
+            stimulus_list (list[list[str]]): a list of lists, where each inner list contains the names of all
+            the images in a stimulus set.
+
+        Returns:
+            list[dict[str, str]]: a list of dictionaries, where each dictionary represents a stimulus 
+            pairing and the side on which it is displayed.
+        """
         full_stimulus_pairings_list = []
 
         for target_word in Config.target_word_list:
@@ -96,18 +140,45 @@ class Exp:
         
         random.shuffle(full_stimulus_pairings_list)
 
+        return full_stimulus_pairings_list
+
+    def run_trials(self, full_stimulus_pairings_list: list[dict[str, str]], key_list: list[str]) -> None:
+        """
+        For each trial, the target word is displayed, each stimulus pairing is presented, and 
+        the trial data is recorded.
+
+        Args:
+            full_stimulus_pairings_list (list[dict[str, str]]): a list of dictionaries, where each 
+            dictionary represents a stimulus pairing and the side on which it is displayed.
+            
+            key_list (list[str]): a list of strings, where each string represents a key that can be 
+            pressed.
+
+        Returns:
+            None
+        """
         for trial in full_stimulus_pairings_list:
             if trial["left"] in Config.target_word_list:
                 target_word = trial["left"]
             else:
                 target_word = trial["right"]
+
             self.the_gui.show_target_word(target_word)
             key_pressed, rt = self.the_gui.show_stimulus(trial["left"], trial["right"], key_list)
 
             trial_data = [target_word, trial["left"], trial["right"], key_pressed, rt]
             self.data_list.append(trial_data)
 
-    def save_data(self):
+    def save_data(self) -> None:
+        """
+        Saves the data from the experiment in a .csv file.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         final_data_list = (
             []
         )
@@ -135,16 +206,16 @@ class Exp:
             # add target word to the final trial data
             final_trial_data.append(trial_data[0])
 
-            # add left image to the final trial data
+            # add the image presented to the left-hand screen to the final trial data
             final_trial_data.append(trial_data[1])
 
-            # add right image to the final trial data
+            # add the image presented to the right-hand screen to the final trial data
             final_trial_data.append(trial_data[2])
 
-            # add the key that was pressed to the final trial data
+            # add the key the participant pressed to the final trial data
             final_trial_data.append(trial_data[3])
 
-            # add whether the key that was pressed was the correct key
+            # determine whether the key the participant pressed was the correct key
             if trial_data[1] == trial_data[0]:
                 if trial_data[3] == "f":
                     correct = 1
@@ -158,6 +229,7 @@ class Exp:
             else:
                 correct = 0
 
+            # add whether the key the participant pressed was the correct key
             final_trial_data.append(correct)
 
             # add the reaction time to the final trial data
