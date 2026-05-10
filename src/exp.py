@@ -96,7 +96,7 @@ class Exp:
         full_stimulus_pairings_list = self.create_stimulus_pairings(self.full_stimuli_list)
         self.run_trials(full_stimulus_pairings_list, Config.test_key_list)
         self.the_gui.show_instructions(self.instruction_list[1], True)
-        # self.save_data()
+        self.save_data()
         self.the_gui.root.destroy()
 
     def create_stimulus_pairings(self, stimulus_list: list[list[str]]) -> list[dict[str, str]]: 
