@@ -238,6 +238,8 @@ class Exp:
             # add the data for the current trial to the full final data list
             final_data_list.append(final_trial_data)
 
+        os.makedirs("data", exist_ok=True)
+        
         # create a file with the participant's id number as the file_name, ending with .csv
         filename = f"data/{self.participant_id}.csv"
 
