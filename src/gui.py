@@ -160,7 +160,6 @@ class Gui:
             None
         """
         if event.keysym in valid_keys:
-
             self.root.unbind('<Key>')
 
             self.root.focus_set()
